@@ -1,0 +1,27 @@
+{
+  "name": "Cogent3 Workshop",
+  "dockerFile": "Dockerfile",
+  "workspaceFolder": "/home/user/workshop",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "zsh"
+          }
+        },
+        "python.defaultInterpreterPath": "/home/user/.conda/envs/c312/bin/python"
+      }
+    }
+  },
+  "remoteUser": "user",
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/home/user/workshop,type=bind,consistency=cached"
+  ],
+  "postCreateCommand": "/bin/bash /home/user/workshop/setup_scripts/download_files.sh"
+}
