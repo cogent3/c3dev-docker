@@ -19,6 +19,7 @@ RUN apt-get update -q && \
         zip \
         unzip \
         pigz \
+        make \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -56,13 +57,12 @@ RUN echo "source /opt/conda/etc/profile.d/conda.sh" >> ~/.zshrc && \
 
 # Clone the repositories using https, limit depth
 WORKDIR /home/user/repos
-RUN git clone --single-branch --branch develop --depth 1 https://github.com/cogent3/cogent3.git /home/user/repos/Cogent3 && \
-    git clone --single-branch --branch develop --depth 1 https://github.com/cogent3/EnsemblLite.git /home/user/repos/EnsemblLite
+RUN git clone --single-branch --branch develop --depth 1 https://github.com/cogent3/cogent3.git /home/user/repos/Cogent3
 
 # Install flit in the conda environment
 RUN source /opt/conda/etc/profile.d/conda.sh && \
     conda activate c312 && \
-    conda install -c conda-forge flit h5py -y
+    conda install -c conda-forge flit -y
 
 # We use pip to install so we get plotly etc.. but also install
 # other packages required for using jupyter notebooks
@@ -70,9 +70,7 @@ RUN source /opt/conda/etc/profile.d/conda.sh && \
     conda activate c312 && \
     pip install ipykernel nbformat ipywidgets && \
     cd /home/user/repos/Cogent3 && \
-    pip install -e ".[extra]" && \
-    cd /home/user/repos/EnsemblLite && \
-    pip install -e .
+    pip install -e ".[extra]"
 
 # Start in the home directory
 WORKDIR /home/user
